@@ -10,7 +10,29 @@ const app = express();
 // For security related middleware we use the middleware right at top
 app.use(helmet());
 
-app.get("/secret", (req, res) => {
+function checkLoggedIn(req, res, next) {
+  const isLoggedIn = true; //TODO
+  if (!isLoggedIn) {
+    return res.status(401).json({ error: "You must log in!" });
+  }
+  //NOTE We pass on the control to the next in sequence of our middleware / endpoint
+  next();
+}
+
+//NOTE The OAuth Client ID we created in Google CLoud console.
+app.get("/google/auth", (req, res) => {
+  //TODO
+});
+
+app.get("/google/auth/callback", (req, res) => {
+  //TODO
+});
+
+app.get("/auth/logout", (req, res) => {
+  //TODO
+});
+
+app.get("/secret", checkLoggedIn, (req, res) => {
   return res.send("Your personal secret value is 86!!");
 });
 
